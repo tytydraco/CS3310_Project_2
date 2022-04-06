@@ -3,7 +3,7 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        Graph testGraph = new Graph(
+        /*Graph testGraph = new Graph(
                 new int[][]{
                         {0, 4, -1, -1, -1},
                         {-1, 0, 3, 3, -1},
@@ -16,6 +16,9 @@ public class Main {
         Dijkstras dijkstras = new Dijkstras(testGraph);
         //dijkstras.findCheapestPathsFrom(0);
         dijkstras.findAllCheapestPaths();
-        //dijkstras.prettyPrintTable();
+        //dijkstras.prettyPrintTable();*/
+
+        Tests tests = new Tests();
+        tests.runTests();
     }
 }
