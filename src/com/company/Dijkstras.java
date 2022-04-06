@@ -5,18 +5,13 @@ import java.util.HashSet;
 
 public class Dijkstras {
     Graph graph;
-    int start;
 
     private int[][] costPrevTable;
     private HashSet<Integer> visited = new HashSet<>();
 
-    public Dijkstras(Graph graph, int start) {
+    public Dijkstras(Graph graph) {
         this.graph = graph;
-        this.start = start;
         costPrevTable = new int[2][graph.adjacency.length];
-
-        initializeTable();
-        visited.add(start);
     }
 
     /**
@@ -26,7 +21,14 @@ public class Dijkstras {
         return graph.adjacency[from][to];
     }
 
-    private void initializeTable() {
+    /**
+     * Initialize from scratch
+     * @param start The node to use as the start node
+     */
+    private void initialize(int start) {
+        visited.clear();
+        visited.add(start);
+
         /* Set all prev nodes to start */
         for (int i = 0; i < graph.adjacency.length; i++) {
             int cost = getDistance(start, i);
@@ -90,10 +92,8 @@ public class Dijkstras {
         return cheapestIdx;
     }
 
-    public void findCheapestPaths() {
-        // TODO: pick smallest cost plus cost of prev
-        // TODO: update all nodes if that makes anything cheaper
-        // TODO: stop once all nodes are visited (accessible therefore)
+    public void findCheapestPathsFrom(int start) {
+        initialize(start);
 
         while (true) {
             //prettyPrintTable();
@@ -111,6 +111,15 @@ public class Dijkstras {
             updateFor(cheapest);
 
             //System.out.println(cheapest);
+        }
+    }
+
+    public void findAllCheapestPaths() {
+        for (int i = 0; i < graph.adjacency.length; i++) {
+            System.out.println("START: " + i);
+            findCheapestPathsFrom(i);
+            prettyPrintTable();
+            System.out.println();
         }
     }
 

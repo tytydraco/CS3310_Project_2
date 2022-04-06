@@ -13,8 +13,9 @@ public class Main {
                 }
         );
 
-        Dijkstras dijkstras = new Dijkstras(testGraph, 0);
-        dijkstras.findCheapestPaths();
-        dijkstras.prettyPrintTable();
+        Dijkstras dijkstras = new Dijkstras(testGraph);
+        //dijkstras.findCheapestPathsFrom(0);
+        dijkstras.findAllCheapestPaths();
+        //dijkstras.prettyPrintTable();
     }
 }
