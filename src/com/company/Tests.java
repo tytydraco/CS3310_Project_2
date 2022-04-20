@@ -34,12 +34,53 @@ public class Tests {
         return new Graph(adjacency);
     }
 
+    private Graph generateGraph_Floyd(int nodes) {
+        Random random = new Random(System.currentTimeMillis());
+        int[][] adjacency = new int[nodes][nodes];
+
+        for (int i = 0; i < nodes; i++) {
+            for (int j = 0; j < nodes; j++) {
+                if (i == j) {
+                    adjacency[i][j] = 0;
+                    continue;
+                }
+
+                boolean randomConnected = random.nextBoolean();
+                if (!randomConnected) {
+                    adjacency[i][j] = MAX_WEIGHT+1;
+                    continue;
+                }
+
+                int randomWeight = random.nextInt(MAX_WEIGHT);
+
+                boolean isNeg = random.nextBoolean();
+                if (isNeg)
+                    randomWeight *= -1;
+
+                adjacency[i][j] = randomWeight;
+            }
+        }
+
+        // TODO: make sure generated graph is valid
+
+        return new Graph(adjacency);
+    }
+
     public void runTests() {
         for (int i = 0; i < RUNS; i++) {
             Graph g = generateGraph(4);
             System.out.println(Arrays.deepToString(g.adjacency));
             Dijkstras dijkstras = new Dijkstras(g);
             dijkstras.findAllCheapestPaths();
+        }
+    }
+
+    public void runTests_Floyd() {
+        for (int i = 0; i < RUNS; i++) {
+            Graph g = generateGraph_Floyd(4);
+            System.out.println(Arrays.deepToString(g.adjacency));
+            FloydWarshall floyd = new FloydWarshall();
+            floyd.getDistance(g);
         }
     }
 }

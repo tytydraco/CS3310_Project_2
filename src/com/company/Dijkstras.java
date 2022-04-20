@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Stack;
 
 public class Dijkstras {
     Graph graph;
@@ -120,11 +121,51 @@ public class Dijkstras {
             findCheapestPathsFrom(i);
             prettyPrintTable();
             System.out.println();
+            EXTRA_CREDIT_printShortestPath(i);
+            System.out.println("----------------------------");
         }
     }
 
+    public void EXTRA_CREDIT_printShortestPath(int start) {
+        Stack<Integer> shortestpath = new Stack<Integer>();
+        for (int i = 0; i < costPrevTable[1].length; i++) {
+            if (costPrevTable[1][i] == start) {
+                System.out.println(start + " -> " + i);
+                continue;
+            }
+            shortestpath.push(i);
+            int prev = costPrevTable[1][i];
+            //shortestpath.push(i);
+            while (prev != start) {
+                shortestpath.push(prev);
+                prev = costPrevTable[1][prev];
+                /*for (int j = 0; j < costPrevTable[1].length; j++) {
+                    if (j == prev) {
+                        shortestpath.push(j);
+                        prev = costPrevTable[1][j];
+                    }
+                    if (prev == start)
+                        break;
+                } */
+            }
+            System.out.print(start + " -> " + shortestpath.pop());
+            while (!shortestpath.isEmpty())
+                System.out.print(" -> "+ shortestpath.pop());    
+            System.out.println();
+        }
+
+    }
+
     public void prettyPrintTable() {
-        System.out.println("COST: " + Arrays.toString(costPrevTable[0]));
+        String[] costPrevTable_INF = new String[costPrevTable[0].length];
+        for (int i = 0; i < costPrevTable[0].length; i++) {
+            if (costPrevTable[0][i] == -1) {
+                costPrevTable_INF[i] = "INF";
+                continue;
+            }
+            costPrevTable_INF[i] = String.valueOf(costPrevTable[0][i]);
+        }
+        System.out.println("COST: " + Arrays.toString(costPrevTable_INF));
         System.out.println("PREV: " + Arrays.toString(costPrevTable[1]));
         System.out.println("VISI: " + Arrays.toString(visited.toArray()));
     }
