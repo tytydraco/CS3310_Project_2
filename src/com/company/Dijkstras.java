@@ -126,9 +126,17 @@ public class Dijkstras {
         }
     }
 
-    public void EXTRA_CREDIT_printShortestPath(int start) {
+    public void EXTRA_CREDIT_printShortestPath(int start) {  //need to handle if there is no path from start to end, nvm i think i did it lol
         Stack<Integer> shortestpath = new Stack<Integer>();
         for (int i = 0; i < costPrevTable[1].length; i++) {
+            if (costPrevTable[0][i] == -1) {
+                System.out.println("No path from " + start + " to " + i);
+                continue;
+            }
+            if (i == start) {
+                System.out.println(start);
+                continue;
+            }
             if (costPrevTable[1][i] == start) {
                 System.out.println(start + " -> " + i);
                 continue;

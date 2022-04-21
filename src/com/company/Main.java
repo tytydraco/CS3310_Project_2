@@ -38,6 +38,13 @@ public class Main {
                         {3, 101, 2, 101, 101, 6, 0}
                 }
         );
+
+        Graph testGraph5 = new Graph(
+            new int[][] { { 0, 3, 101, 7 },
+            { 8, 0, 2, 101 },
+            { 5, 101, 0, 1 },
+            { 2, 101, 101, 0 } }
+        );
         /*
         Dijkstras dijkstras = new Dijkstras(testGraph);
         dijkstras.findCheapestPathsFrom(0);
@@ -52,7 +59,7 @@ public class Main {
         Dijkstras dijkstras = new Dijkstras(testGraph);
         dijkstras.findAllCheapestPaths();
         FloydWarshall floyd = new FloydWarshall();
-        floyd.getDistance(testGraph4);
+        floyd.getDistance(testGraph5);
 
         //Tests tests = new Tests();
         //tests.runTests(); 
