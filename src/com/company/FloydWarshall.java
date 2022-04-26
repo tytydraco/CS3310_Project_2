@@ -67,12 +67,13 @@ public class FloydWarshall {
     return shortestpath;
 }
 
-    private void findPath(int[][] path, int start) {
+    private void findPath(int[][] matrix, int[][] path, int start) {
         int start_save = start;
         System.out.println("start: " + start);
         for (int i = 0; i < path.length; i++) {
             start = start_save;
-            if (path[start][i] == 101) {
+            //System.out.println(path[5][0]);
+            if (matrix[start][i] == 101) {
                 System.out.println("No path from " + start_save + " to " + i);
                 continue;
             }
@@ -87,6 +88,8 @@ public class FloydWarshall {
                 
             while (start != i)
             {
+                System.out.println(start);
+                System.out.println(i+"\n");
                 start = path[start][i];
                 shortestPath.add(start);
             }
@@ -111,8 +114,8 @@ public class FloydWarshall {
         }
         System.out.println();
         for (int i = 0; i < matrix.length; i++) {
-            findPath(path, i);
-            //constructPath(3, i, path);
+            findPath(matrix, path, i);
+            //constructPath(0, i, path);
             System.out.println();
         }
     }

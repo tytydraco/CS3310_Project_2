@@ -17,7 +17,7 @@ public class Main {
 
         Graph testGraph2 = new Graph(
             new int[][]{ 
-                { 0, 3, 999, 5 }, { 2, 0, 999, 4 }, { 999, 1, 0, 999 }, { 999, 999, 2, 0 } 
+                { 0, 3, 101, 5 }, { 2, 0, 101, 4 }, { 101, 1, 0, 101 }, { 101, 101, 2, 0 } 
             }
         );
         
@@ -45,6 +45,11 @@ public class Main {
             { 5, 101, 0, 1 },
             { 2, 101, 101, 0 } }
         );
+
+        Graph testGraph6 = new Graph(
+            new int[][] { {0, 101, 49, 50}, {7, 0, 101, 101}, {-32, 83, 0, 72}, {92, 101, -80, 0} }
+        );
+        
         /*
         Dijkstras dijkstras = new Dijkstras(testGraph);
         dijkstras.findCheapestPathsFrom(0);
@@ -54,12 +59,16 @@ public class Main {
         floyd.getDistance(testGraph2);
         */
 
-        //Tests tests = new Tests();
-       // tests.runTests_Floyd(); 
-        Dijkstras dijkstras = new Dijkstras(testGraph);
-        dijkstras.findAllCheapestPaths();
+       // Tests tests = new Tests();
+        //tests.runTests_Floyd(); 
+        //tests.runTests(); 
+
+       
+        Dijkstras dijkstras = new Dijkstras(testGraph);    //both algorithms and extra credit verified
+        dijkstras.findAllCheapestPaths();              
         FloydWarshall floyd = new FloydWarshall();
-        floyd.getDistance(testGraph5);
+        floyd.getDistance(testGraph4);
+        
 
         //Tests tests = new Tests();
         //tests.runTests(); 
