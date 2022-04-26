@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Stack;
 
 public class Dijkstras {
+    public final int MAX_WEIGHT = 100;
     Graph graph;
 
     private int[][] costPrevTable;
@@ -52,11 +53,11 @@ public class Dijkstras {
                 continue;
 
             /* Inaccessible node */
-            if (cost == -1)
+            if (cost == MAX_WEIGHT+1)
                 continue;
 
             /* Cheaper path identified! */
-            if (cost + selfCost < currentCost || currentCost == -1) {
+            if (cost + selfCost < currentCost || currentCost == MAX_WEIGHT+1) {
                 setCostOf(j, cost + selfCost);
                 setPrevOf(j, i);
             }
@@ -70,8 +71,8 @@ public class Dijkstras {
     private boolean alreadyVisited(int i) { return visited.contains(i); }
 
     private int cheapestNonVisited() {
-        int cheapestIdx = -1;
-        int cheapestCost = -1;
+        int cheapestIdx = MAX_WEIGHT+1;
+        int cheapestCost = MAX_WEIGHT+1;
 
         for (int i = 0; i < graph.adjacency.length; i++) {
             if (alreadyVisited(i))
@@ -80,11 +81,11 @@ public class Dijkstras {
             int cost = getCostOf(i);
 
             /* Inaccessible */
-            if (cost == -1)
+            if (cost == MAX_WEIGHT+1)
                 continue;
 
             /* Set new best option if cheaper OR if we haven't chosen one yet */
-            if (cost < cheapestCost || cheapestIdx == -1) {
+            if (cost < cheapestCost || cheapestIdx == MAX_WEIGHT+1) {
                 cheapestIdx = i;
                 cheapestCost = cost;
             }
@@ -102,7 +103,7 @@ public class Dijkstras {
             int cheapest = cheapestNonVisited();
 
             /* There is no other non-visited node */
-            if (cheapest == -1)
+            if (cheapest == MAX_WEIGHT+1)
                 break;
 
             /* Add node to the list of visited nodes */
@@ -129,7 +130,7 @@ public class Dijkstras {
     public void EXTRA_CREDIT_printShortestPath(int start) {  //need to handle if there is no path from start to end, nvm i think i did it lol
         Stack<Integer> shortestpath = new Stack<Integer>();
         for (int i = 0; i < costPrevTable[1].length; i++) {
-            if (costPrevTable[0][i] == -1) {
+            if (costPrevTable[0][i] == MAX_WEIGHT+1) {
                 System.out.println("No path from " + start + " to " + i);
                 continue;
             }
@@ -167,7 +168,7 @@ public class Dijkstras {
     public void prettyPrintTable() {
         String[] costPrevTable_INF = new String[costPrevTable[0].length];
         for (int i = 0; i < costPrevTable[0].length; i++) {
-            if (costPrevTable[0][i] == -1) {
+            if (costPrevTable[0][i] == MAX_WEIGHT+1) {
                 costPrevTable_INF[i] = "INF";
                 continue;
             }

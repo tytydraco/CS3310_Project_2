@@ -64,7 +64,7 @@ public class Main {
         //tests.runTests(); 
 
        
-        Dijkstras dijkstras = new Dijkstras(testGraph);    //both algorithms and extra credit verified
+        Dijkstras dijkstras = new Dijkstras(testGraph4);    //both algorithms and extra credit verified
         dijkstras.findAllCheapestPaths();              
         FloydWarshall floyd = new FloydWarshall();
         floyd.getDistance(testGraph4);
