@@ -153,21 +153,22 @@ public class Tests {
         return connectedNodes.size() == number_of_nodes;
     }
 
-    public void runTests() {
-        for (int i = 0; i < RUNS; i++) {
-            Graph g = generateGraph(4);
-            System.out.println(Arrays.deepToString(g.adjacency));
-            Dijkstras dijkstras = new Dijkstras(g);
-            dijkstras.findAllCheapestPaths();
-        }
-    }
+    public void runTests(int runs, int nodeTwoPow) {
+        for (int i = 1; i < runs + 1; i++) {
+            for (int j = 1; j < nodeTwoPow + 1; j++) {
+                int nodes = (int) Math.round(Math.pow(2, j));
+                System.out.println();
+                System.out.println("RUN #" + i + " WITH " + nodes + " NODES");
 
-    public void runTests_Floyd() {
-        for (int i = 0; i < RUNS; i++) {
-            Graph g = generateGraph_Floyd(4);
-            System.out.println(Arrays.deepToString(g.adjacency));
-            FloydWarshall floyd = new FloydWarshall();
-            floyd.getDistance(g);
+                Graph g = generateGraph(nodes);
+                System.out.println(Arrays.deepToString(g.adjacency));
+
+                Dijkstras dijkstras = new Dijkstras(g);
+                FloydWarshall floyd = new FloydWarshall();
+
+                dijkstras.findAllCheapestPaths();
+                floyd.getDistance(g);
+            }
         }
     }
 }
