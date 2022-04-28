@@ -8,6 +8,74 @@ public class Tests {
     public final int MAX_WEIGHT = 100;
     public final int RUNS = 100;
 
+    private static void panic(String message) {
+        System.out.println(message);
+        System.exit(1);
+    }
+
+    /**
+     * For Dijkstras we just compare costPrev tables
+     * For Floyd we compare matrices
+     */
+    public void assertSanityChecks() {
+        Graph testGraph = new Graph(
+            new int[][] {
+                {0, MAX_WEIGHT+1, 11, 70},
+                {MAX_WEIGHT+1, 0, MAX_WEIGHT+1, 45},
+                {MAX_WEIGHT+1, 41, 0, MAX_WEIGHT+1},
+                {MAX_WEIGHT+1, 86, MAX_WEIGHT+1, 0},
+            }
+        );
+
+        int[][] testGraphCostPrev0 = {
+            {0, 52, 11, 70},
+            {0, 2, 0, 0}
+        };
+
+        int[][] testGraphCostPrev1 = {
+            {MAX_WEIGHT+1, 0, MAX_WEIGHT+1, 45},
+            {1, 1, 1, 1}
+        };
+
+        int[][] testGraphCostPrev2 = {
+            {MAX_WEIGHT+1, 41, 0, 86},
+            {2, 2, 2, 1}
+        };
+
+        int[][] testGraphCostPrev3 = {
+            {MAX_WEIGHT+1, 86, MAX_WEIGHT+1, 0},
+            {3, 3, 3, 3}
+        };
+
+        Dijkstras dijkstras = new Dijkstras(testGraph);
+
+        dijkstras.findCheapestPathsFrom(0);
+        if (!Arrays.deepEquals(dijkstras.costPrevTable, testGraphCostPrev0)) panic("Sanity failed!");
+
+        dijkstras.findCheapestPathsFrom(1);
+        if (!Arrays.deepEquals(dijkstras.costPrevTable, testGraphCostPrev1)) panic("Sanity failed!");
+
+        dijkstras.findCheapestPathsFrom(2);
+        if (!Arrays.deepEquals(dijkstras.costPrevTable, testGraphCostPrev2)) panic("Sanity failed!");
+
+        dijkstras.findCheapestPathsFrom(3);
+        if (!Arrays.deepEquals(dijkstras.costPrevTable, testGraphCostPrev3)) panic("Sanity failed!");
+
+        int[][] floydMatrix = {
+            {0, 52, 11, 70},
+            {MAX_WEIGHT+1, 0, MAX_WEIGHT+1, 45},
+            {MAX_WEIGHT+1, 41, 0, 86},
+            {MAX_WEIGHT+1, 86, MAX_WEIGHT+1, 0},
+        };
+
+        FloydWarshall floyd = new FloydWarshall();
+        int[][] matrix = floyd.getDistance(testGraph);
+
+        if (!Arrays.deepEquals(matrix, floydMatrix)) panic("Sanity failed!");
+
+        System.out.println("SANITY CHECKS PASSED");
+    }
+
     private Graph generateGraph(int nodes) {
         Random random = new Random(System.currentTimeMillis());
         int[][] adjacency = new int[nodes][nodes];
@@ -29,7 +97,7 @@ public class Tests {
                 adjacency[i][j] = randomWeight;
             }
         }
-        if (isConnected(adjacency, 4, MAX_WEIGHT+1))
+        if (isConnected(adjacency, nodes, MAX_WEIGHT+1))
             return new Graph(adjacency);
         else {
             System.out.println("NOT CONNECTED");
@@ -64,8 +132,7 @@ public class Tests {
             }
         }
 
-        // TODO: make sure generated graph is valid
-        if (isConnected(adjacency, 4, MAX_WEIGHT+1))
+        if (isConnected(adjacency, nodes, MAX_WEIGHT+1))
             return new Graph(adjacency);
         else {
             System.out.println("NOT CONNECTED");
@@ -73,7 +140,7 @@ public class Tests {
         }
     }
 
-    private static boolean isConnected(int adjacency_matrix[][], int number_of_nodes, int inf) {
+    private static boolean isConnected(int[][] adjacency_matrix, int number_of_nodes, int inf) {
         HashSet<Integer> connectedNodes = new HashSet<Integer>();
         for (int i = 0; i < number_of_nodes; i++) {
             for (int j = 0; j < number_of_nodes; j++) {
@@ -89,7 +156,6 @@ public class Tests {
     public void runTests() {
         for (int i = 0; i < RUNS; i++) {
             Graph g = generateGraph(4);
-            //System.out.println(isConnected(g, 4));
             System.out.println(Arrays.deepToString(g.adjacency));
             Dijkstras dijkstras = new Dijkstras(g);
             dijkstras.findAllCheapestPaths();
@@ -99,7 +165,6 @@ public class Tests {
     public void runTests_Floyd() {
         for (int i = 0; i < RUNS; i++) {
             Graph g = generateGraph_Floyd(4);
-            //System.out.println(isConnected(g, 4));
             System.out.println(Arrays.deepToString(g.adjacency));
             FloydWarshall floyd = new FloydWarshall();
             floyd.getDistance(g);

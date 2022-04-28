@@ -8,8 +8,8 @@ public class Dijkstras {
     public final int MAX_WEIGHT = 100;
     Graph graph;
 
-    private int[][] costPrevTable;
-    private HashSet<Integer> visited = new HashSet<>();
+    public final int[][] costPrevTable;
+    private final HashSet<Integer> visited = new HashSet<>();
 
     public Dijkstras(Graph graph) {
         this.graph = graph;
@@ -98,8 +98,6 @@ public class Dijkstras {
         initialize(start);
 
         while (true) {
-            //prettyPrintTable();
-
             int cheapest = cheapestNonVisited();
 
             /* There is no other non-visited node */
@@ -111,8 +109,6 @@ public class Dijkstras {
 
             /* Update table to see if there are any new connections we can make */
             updateFor(cheapest);
-
-            //System.out.println(cheapest);
         }
     }
 

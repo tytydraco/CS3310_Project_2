@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
 import java.util.Vector;
@@ -9,7 +10,7 @@ public class FloydWarshall {
     public final int MAX_WEIGHT = 100;
     //public static int path[][];
 
-    void getDistance(Graph graph) {
+    int[][] getDistance(Graph graph) {
         int matrix[][] = new int[graph.adjacency.length][graph.adjacency.length];
         int path[][] = new int[graph.adjacency.length][graph.adjacency.length];
         int i, j, k;
@@ -40,6 +41,8 @@ public class FloydWarshall {
             }
         }
         printMatrix(matrix, path);
+
+        return matrix;
     }
     static Vector<Integer> constructPath(int u,
                                     int v, int path[][])
