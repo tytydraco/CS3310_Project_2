@@ -153,10 +153,21 @@ public class Tests {
         return connectedNodes.size() == number_of_nodes;
     }
 
+    private long timeIt(Runnable r) {
+        long s = System.currentTimeMillis();
+        r.run();
+        long e = System.currentTimeMillis();
+        return e - s;
+    }
+
     public void runTests(int runs, int nodeTwoPow) {
-        for (int i = 1; i < runs + 1; i++) {
-            for (int j = 1; j < nodeTwoPow + 1; j++) {
-                int nodes = (int) Math.round(Math.pow(2, j));
+        for (int j = 1; j < nodeTwoPow + 1; j++) {
+            int nodes = (int) Math.round(Math.pow(2, j));
+
+            long timesDijkstra = 0;
+            long timesFloyd = 0;
+
+            for (int i = 1; i < runs + 1; i++) {
                 System.out.println();
                 System.out.println("RUN #" + i + " WITH " + nodes + " NODES");
 
@@ -166,9 +177,15 @@ public class Tests {
                 Dijkstras dijkstras = new Dijkstras(g);
                 FloydWarshall floyd = new FloydWarshall();
 
-                dijkstras.findAllCheapestPaths();
-                floyd.getDistance(g);
+                timesDijkstra += timeIt(dijkstras::findAllCheapestPaths);
+                timesFloyd += timeIt(() -> floyd.getDistance(g));
             }
+
+            timesDijkstra /= runs;
+            timesFloyd /= runs;
+
+            System.out.println("DIJKSTRA AVG TIME FOR " + nodes + " NODES: " + timesDijkstra + " MS");
+            System.out.println("FLOYD AVG TIME FOR " + nodes + " NODES: " + timesFloyd + " MS");
         }
     }
 }
