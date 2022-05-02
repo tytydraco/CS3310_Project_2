@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.rmi.MarshalException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -99,12 +100,22 @@ public class Tests {
                 adjacency[i][j] = randomWeight;
             }
         }
-        if (isConnected(adjacency, nodes, MAX_WEIGHT+1))
-            return new Graph(adjacency);
-        else {
-            System.out.println("NOT CONNECTED");
-            return generateGraph(nodes);
+        int randomNode = random.nextInt(nodes);
+        for (int i = 0; i < nodes; i++) {   //Ensures graph is all connected
+            if (i == randomNode)
+                continue;
+            if (adjacency[randomNode][i] < MAX_WEIGHT+1)
+                continue;
+            int randomWeight = random.nextInt(MAX_WEIGHT);
+            adjacency[randomNode][i] = randomWeight;  
         }
+
+        //if (isConnected(adjacency, nodes, MAX_WEIGHT+1))
+        return new Graph(adjacency);
+        //else {
+          //  System.out.println("NOT CONNECTED");
+            //return generateGraph(nodes);
+        //}
     }
 
     private static boolean isConnected(int[][] adjacency_matrix, int number_of_nodes, int inf) {
