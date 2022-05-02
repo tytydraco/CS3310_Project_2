@@ -1,17 +1,19 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
 public class Tests {
     public final int MAX_WEIGHT = 100;
-    public final int RUNS = 100;
 
     private static void panic(String message) {
         System.out.println(message);
         System.exit(1);
     }
+
+    ArrayList<long[]> times = new ArrayList<>();
 
     /**
      * For Dijkstras we just compare costPrev tables
@@ -105,41 +107,6 @@ public class Tests {
         }
     }
 
-    private Graph generateGraph_Floyd(int nodes) {
-        Random random = new Random(System.currentTimeMillis());
-        int[][] adjacency = new int[nodes][nodes];
-
-        for (int i = 0; i < nodes; i++) {
-            for (int j = 0; j < nodes; j++) {
-                if (i == j) {
-                    adjacency[i][j] = 0;
-                    continue;
-                }
-
-                boolean randomConnected = random.nextBoolean();
-                if (!randomConnected) {
-                    adjacency[i][j] = MAX_WEIGHT+1;
-                    continue;
-                }
-
-                int randomWeight = random.nextInt(MAX_WEIGHT);
-
-                boolean isNeg = random.nextBoolean();
-                if (isNeg)
-                    randomWeight *= -1;
-
-                adjacency[i][j] = randomWeight;
-            }
-        }
-
-        if (isConnected(adjacency, nodes, MAX_WEIGHT+1))
-            return new Graph(adjacency);
-        else {
-            System.out.println("NOT CONNECTED");
-            return generateGraph(nodes);
-        }
-    }
-
     private static boolean isConnected(int[][] adjacency_matrix, int number_of_nodes, int inf) {
         HashSet<Integer> connectedNodes = new HashSet<Integer>();
         for (int i = 0; i < number_of_nodes; i++) {
@@ -184,8 +151,12 @@ public class Tests {
             timesDijkstra /= runs;
             timesFloyd /= runs;
 
+            times.add(new long[] {timesDijkstra, timesFloyd});
+
             System.out.println("DIJKSTRA AVG TIME FOR " + nodes + " NODES: " + timesDijkstra + " MS");
             System.out.println("FLOYD AVG TIME FOR " + nodes + " NODES: " + timesFloyd + " MS");
         }
+
+        System.out.println(Arrays.deepToString(times.toArray()));
     }
 }
